@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatSphere Room</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        // Authentication check: Redirect to login if user is not logged in
+        const currentUser = sessionStorage.getItem("loggedInUser");
+        if (!currentUser) {
+            alert("You must be logged in to join the chat.");
+            window.location.href = "index.html";
+        }
+    </script>
+</head>
+<body class="chat-page">
+    <div class="chat-container">
+        <header class="chat-header">
+            <h2>ChatSphere Room</h2>
+        </header>
+        <main class="chat-messages" id="chat-messages"></main>
+        <div class="chat-form-container">
+            <form id="chat-form">
+                <input type="text" id="msg" placeholder="Enter Message" required autocomplete="off">
+                <button type="submit" class="btn">Send</button>
+                <input type="file" id="media-file" style="display: none;">
+                <button type="button" class="btn" onclick="document.getElementById('media-file').click();">Attach</button>
+            </form>
+        </div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

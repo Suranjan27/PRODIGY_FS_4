@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatSphere - Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    .gif-container {
+      flex: 1;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .gif-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .auth-page {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .gif-container {
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="gif-container">
+    <img src="https://i.pinimg.com/originals/7c/1d/ab/7c1dab157f34e603487b5d0b057da448.gif" alt="Rocket launching animation">
+  </div>
+  <form id="signupForm">
+    <h2>ChatSphere<br>Sign Up</h2>
+    <input type="email" id="signupEmail" placeholder="Email" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <button type="submit">Register</button>
+    <p>Already have an account? <a href="index.html">Login</a></p>
+  </form>
+  <script src="script.js"></script>
+</body>
+</html>

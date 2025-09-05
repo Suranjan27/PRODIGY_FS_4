@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatSphere - Live Chat Application</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <script>
+    // Authentication check: Redirect to login if user is not logged in
+    const currentUser = sessionStorage.getItem("loggedInUser");
+    if (!currentUser) {
+        alert("You must be logged in to access this page.");
+        window.location.href = "index.html";
+    }
+  </script>
+
+  <style>
+    /* --- Global Styles & Variables --- */
+    :root {
+      --primary-color: #00aaff;
+      --primary-hover: #0088cc;
+      --dark-bg: #0d1117;
+      --dark-bg-gradient: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+      --light-text: #c9d1d9;
+      --dark-text: #8b949e;
+      --glass-bg: rgba(30, 41, 59, 0.5);
+      --border-color: rgba(139, 148, 158, 0.3);
+      --error-color: #f85149;
+      --success-color: #3fb950;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--dark-bg);
+      background-image: var(--dark-bg-gradient);
+      color: var(--light-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 2rem;
+    }
+
+    /* --- Header --- */
+    .header {
+      background: rgba(13, 17, 23, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      cursor: default;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-menu a {
+      color: var(--light-text);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+
+    .nav-menu a:hover {
+      color: var(--primary-color);
+    }
+
+    .nav-menu a:hover::after {
+      width: 100%;
+    }
+
+
+    /* --- Join Section --- */
+    .join-section {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1rem;
+    }
+
+    .join-container {
+      background: var(--glass-bg);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      padding: 3rem;
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      color: var(--dark-text);
+      margin-bottom: 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      flex: 1;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--light-text);
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--dark-text);
+        transition: color 0.3s ease;
+    }
+
+    .input {
+      width: 100%;
+      padding: 12px 15px 12px 40px; /* Left padding for icon */
+      background: rgba(13, 17, 23, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--light-text);
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 170, 255, 0.2);
+    }
+
+    .input:focus + i, .input-group:focus-within i {
+        color: var(--primary-color);
+    }
+
+    /* Remove arrows from number input */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .connect-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary-color);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .connect-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-3px);
+    }
+
+    .connect-btn:active {
+        transform: translateY(0);
+    }
+
+    .status {
+      margin-top: 1.5rem;
+      padding: 10px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .status.visible {
+        display: block;
+        opacity: 1;
+    }
+
+    .status.error {
+      background: rgba(248, 81, 73, 0.1);
+      color: var(--error-color);
+    }
+
+    .status.success {
+      background: rgba(63, 185, 80, 0.1);
+      color: var(--success-color);
+    }
+
+    /* --- About Section --- */
+    .about-section {
+        padding: 5rem 2rem;
+    }
+
+    .section-title-light {
+        text-align: center;
+        font-size: 2.2rem;
+        color: #fff;
+        margin-bottom: 3rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+        color: var(--dark-text);
+    }
+
+
+    /* --- Footer --- */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid var(--border-color);
+        color: var(--dark-text);
+        background: #0d1117;
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+        .header-content {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+        }
+
+        .join-container {
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+    }
+  </style>
+</head>
+<body class="chat-page">
+  <header class="header">
+    <div class="header-content container">
+      <div class="logo">💬 ChatSphere</div>
+      <nav>
+        <ul class="nav-menu">
+          <li><a onclick="scrollToSection('join')">Join</a></li>
+          <li><a onclick="scrollToSection('about')">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <section id="join" class="join-section">
+      <div class="join-container">
+        <h1 class="section-title">Connect to the Sphere</h1>
+        <p class="section-subtitle">Enter your name and a server number to start chatting instantly.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="userName">Your Name</label>
+            <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input type="text" id="userName" class="input" placeholder="e.g., Alex" maxlength="20">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="serverNumber">Server Number</label>
+            <div class="input-group">
+              <i class="fas fa-server"></i>
+              <input type="number" id="serverNumber" class="input" placeholder="1-9999" min="1" max="9999">
+            </div>
+          </div>
+        </div>
+
+        <button class="connect-btn" onclick="connect()">
+          <i class="fas fa-bolt"></i> Connect Now
+        </button>
+        <div id="status" class="status"></div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section container">
+        <h2 class="section-title-light">Why ChatSphere?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-rocket feature-icon"></i>
+                <h3>Blazing Fast</h3>
+                <p>Experience real-time messaging with near-zero latency. Your conversations flow as fast as you can type.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>Simple & Secure</h3>
+                <p>No sign-ups, no tracking. Just pick a name, a server, and chat. Your privacy is our priority.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-globe feature-icon"></i>
+                <h3>Globally Accessible</h3>
+                <p>Connect with anyone, anywhere. All you need is a browser to join a public or private server.</p>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+      <div class="container">
+          <p>&copy; 2025 ChatSphere. All Rights Reserved. Crafted with ❤️.</p>
+      </div>
+  </footer>
+
+  <script>
+    function connect() {
+      const name = document.getElementById('userName').value.trim();
+      const server = document.getElementById('serverNumber').value.trim();
+
+      if (!name || name.length < 2) {
+        showStatus('Name must be at least 2 characters long.', 'error');
+        return;
+      }
+      if (!server || server < 1 || server > 9999) {
+        showStatus('Server number must be between 1 and 9999.', 'error');
+        return;
+      }
+
+      showStatus(`Connecting as ${name} to server ${server}...`, 'success');
+
+      setTimeout(() => {
+        window.location.href = `/chat.html?username=${encodeURIComponent(name)}&room=${encodeURIComponent(server)}`;
+      }, 1000);
+    }
+
+    function showStatus(message, type) {
+      const status = document.getElementById('status');
+      status.textContent = message;
+      status.className = `status ${type} visible`;
+    }
+
+    function scrollToSection(sectionId) {
+      document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>

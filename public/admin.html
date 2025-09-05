@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChatSphere Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #9fb4c7, #00feed);
+      padding: 40px;
+      text-align: center;
+    }
+    table {
+      width: 80%;
+      margin: auto;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    th, td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    th {
+      background: #11386bc9;
+      color: #ffffff;
+    }
+    td {
+      color: #ffffff;
+    }
+    button {
+      padding: 8px 12px;
+      background: #ff5252;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(209, 204, 204, 0.2);
+    }
+    button:hover {
+      background: #e84141;
+      transform: scale(1.03);
+    }
+    button:active {
+      transform: scale(0.97);
+    }
+    .logout-btn {
+      background: #093357;
+      margin-top: 30px;
+      color: #ffffff;
+    }
+    .logout-btn:hover {
+      background: #01171e;
+    }
+    h1 {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <h1>ChatSphere<br>Admin Panel (Database)</h1>
+  <table id="userTable"></table>
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <script src="admin.js"></script>
+</body>
+</html>
